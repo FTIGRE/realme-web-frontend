@@ -1,3 +1,54 @@
+# Clean Architecture Overview
+
+Clean Architecture is a software design pattern intended to separate concerns and make systems more modular and maintainable. It divides an application into several layers, each with its own responsibility. This separation allows for better scalability, testability, and flexibility in managing changes.
+
+## Layers of Clean Architecture
+
+The four main layers we will cover are:
+
+- **Presentation**
+- **Domain**
+- **Data**
+- **Infrastructure**
+
+### 1. Presentation Layer
+
+The Presentation Layer is responsible for everything that the user interacts with. It contains the User Interface (UI) and the components needed to display data to the user. This layer should be decoupled from the business logic and domain-specific code.
+
+- Handles user interactions (e.g., through buttons, inputs, etc.)
+- Sends requests to the Domain layer for business logic
+- Displays results and handles UI-specific concerns like navigation or view rendering
+
+In web or mobile applications, this layer typically includes controllers, views, or UI components.
+
+### 2. Domain Layer
+
+The Domain Layer contains the business logic and rules of the application. It should be independent of other layers such as data and infrastructure. This ensures that business rules remain unchanged regardless of UI or data access modifications.
+
+- Core entities that represent the essential data and rules
+- Business rules and use cases (e.g., services or interactors)
+- Domain-specific logic, which is highly reusable
+
+### 3. Data Layer
+
+The Data Layer is responsible for accessing and managing data. It handles communication with external data sources such as databases or APIs, and translates this data into entities that the Domain Layer can use.
+
+- Repositories: Provide an abstraction to retrieve and store data
+- Data sources: Interfaces that interact with APIs, databases, or any external systems
+- Data mappers: Translate raw data into domain entities
+
+### 4. Infrastructure Layer
+
+The Infrastructure Layer supports the other layers by providing common utilities and services such as logging, networking, or external communication. It typically includes third-party libraries or frameworks.
+
+- Contains implementation details like frameworks for logging, messaging, etc.
+- Infrastructure services and adapters that the other layers depend on
+- Abstracts away low-level system details that aren't directly part of business logic
+
+## Conclusion
+
+By following Clean Architecture principles, you can create applications that are scalable, testable, and flexible. Each layer has a distinct role, ensuring that your system is decoupled and easy to maintain over time.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
