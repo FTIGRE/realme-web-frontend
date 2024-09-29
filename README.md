@@ -1,10 +1,8 @@
 # Clean Architecture Overview
 
-Clean Architecture is a software design pattern intended to separate concerns and make systems more modular and maintainable. It divides an application into several layers, each with its own responsibility. This separation allows for better scalability, testability, and flexibility in managing changes.
+Is a software design pattern intended to separate concerns and make systems more modular and maintainable. It divides an application into several layers, each with its own responsibility. This separation allows for better scalability, testability, and flexibility in managing changes.
 
-## Layers of Clean Architecture
-
-The four main layers we will cover are:
+## Layers
 
 - **Presentation**
 - **Domain**
@@ -44,10 +42,6 @@ The Infrastructure Layer supports the other layers by providing common utilities
 - Contains implementation details like frameworks for logging, messaging, etc.
 - Infrastructure services and adapters that the other layers depend on
 - Abstracts away low-level system details that aren't directly part of business logic
-
-## Conclusion
-
-By following Clean Architecture principles, you can create applications that are scalable, testable, and flexible. Each layer has a distinct role, ensuring that your system is decoupled and easy to maintain over time.
 
 # Getting Started with Create React App
 
