@@ -3,4 +3,5 @@ import { ResponseType } from "../types/response.type";
 
 export interface IAuthRepository {
     login(loginRequestData: LoginRequestDataType): Promise<ResponseType<string>>;
+    verifyToken(token: string): Promise<ResponseType<string>>;
 }
