@@ -19,4 +19,15 @@ export class AuthUserCase {
             }
         }
     }
+
+    async verifyToken(token: string): Promise<ResponseType<string>> {
+        try {
+            return await this.authRepositoryImplementation.verifyToken(token);
+        } catch (error) {
+            return {
+                error: true,
+                status: 500
+            }
+        }
+    }
 }

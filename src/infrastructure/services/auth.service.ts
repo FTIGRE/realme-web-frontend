@@ -14,4 +14,9 @@ export class AuthService {
         const response = this.baseApi.doPost<string>('auth/login', loginRequestData);
         return response;
     }
+
+    async VerifyToken(token: string): Promise<ResponseType<string>> {
+        const response = this.baseApi.doPost<string>('auth/verify', { token: token });
+        return response;
+    }
 }
