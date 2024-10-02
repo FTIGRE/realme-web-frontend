@@ -1,0 +1,10 @@
+.drawer-styled {
+    width: 240px;
+    flex-shrink: 0;
+
+    .MuiDrawer-paper {
+        width: 240px;
+        box-sizing: border-box;
+        background-color: #ecf0f1;
+    }
+}

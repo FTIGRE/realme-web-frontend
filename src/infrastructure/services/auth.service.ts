@@ -16,7 +16,7 @@ export class AuthService {
     }
 
     async VerifyToken(token: string): Promise<ResponseType<string>> {
-        const response = this.baseApi.doPost<string>('auth/verify', { token: token });
+        const response = this.baseApi.doPost<string>('auth/verifyJWT', { token: token });
         return response;
     }
 }

@@ -19,15 +19,15 @@ const LoginPage: React.FC = () => {
     
     const navigate = useNavigate();
 
-    const storageUsercase = useStorage();
+    const {storageUserCase} = useStorage();
 
     useEffect(() => {
         const verifyToken = async () => {
-            const token = storageUsercase.getItem({ key: 'token', type: StorageType.LOCAL });
+            const token = storageUserCase.getItem({ key: 'token', type: StorageType.LOCAL });
             if (token) {
                 const response = await authUserCase.verifyToken(token);
                 if (response.error) {
-                    storageUsercase.removeItem({ key: 'token', type: StorageType.LOCAL });
+                    storageUserCase.removeItem({ key: 'token', type: StorageType.LOCAL });
                 } else {
                     navigate('/homePage');
                 }
@@ -42,7 +42,7 @@ const LoginPage: React.FC = () => {
         if (response.error) {
             alert('Error al iniciar sesión');
         } else {
-            response.body && storageUsercase.setItem({ key: 'token', value: response.body, type: StorageType.LOCAL });
+            response.body && storageUserCase.setItem({ key: 'token', value: response.body, type: StorageType.LOCAL });
             navigate('/homePage');
         }
     };

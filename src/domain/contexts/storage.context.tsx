@@ -4,6 +4,8 @@ import { StorageRepositoryImplementation } from '../../data/repositories/storage
 import { StorageUserCase } from '../../domain/userCases/storage.usercase';
 
 interface StorageContextProps {
+    storageService: Storageservice;
+    storageRepositoryImplementation: StorageRepositoryImplementation;
     storageUserCase: StorageUserCase;
 }
 
@@ -16,16 +18,16 @@ export const StorageProvider: React.FC<{ children: ReactNode }> = ({ children })
     const storageUserCase = useMemo(() => new StorageUserCase(storageRepositoryImplementation), [storageRepositoryImplementation]);
 
     return (
-        <StorageContext.Provider value={{ storageUserCase }}>
+        <StorageContext.Provider value={{ storageService, storageRepositoryImplementation, storageUserCase }}>
             {children}
         </StorageContext.Provider>
     );
 };
 
-export const useStorage = (): StorageUserCase => {
+export const useStorage = (): StorageContextProps => {
     const context = useContext(StorageContext);
     if (!context) {
         throw new Error('useStorage must be used within a StorageProvider');
     }
-    return context.storageUserCase;
+    return context;
 };
