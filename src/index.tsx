@@ -3,16 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { StorageProvider } from './presentation/contexts/storage.context';
+import { StorageProvider } from './domain/contexts/storage.context';
+import { ProductsProvider } from './domain/contexts/products.context';
+import { ClientsProvider } from './domain/contexts/clients.context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <StorageProvider>
-      <App />
-    </StorageProvider>
+    <ClientsProvider>
+      <ProductsProvider>
+        <StorageProvider>
+          <App />
+        </StorageProvider>
+      </ProductsProvider>
+    </ClientsProvider>
   </React.StrictMode>
 );
 

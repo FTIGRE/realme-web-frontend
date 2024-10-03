@@ -6,7 +6,7 @@ import ClientsPage from '../clients/clients.page';
 import SellsPage from '../sells/sells.page';
 import SummaryPage from '../summary/summary.page';
 import './layout.scss';
-import { useStorage } from '../../../contexts/storage.context';
+import { useStorage } from '../../../../domain/contexts/storage.context';
 import { StorageType } from '../../../../shared/enums/storagetype.enum';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,12 +16,12 @@ const Layout: React.FC = () => {
 
     const [actualPage, setActualPage] = useState<Pages>(Pages.ROUTINES);
 
-    const { storageUserCase } = useStorage();
+    const { storageUseCase } = useStorage();
 
     const handleChangePage = (page: Pages) => setActualPage(page);
 
     const handleLogout = () => {
-        storageUserCase.removeItem({ key: 'token', type: StorageType.LOCAL });
+        storageUseCase.removeItem({ key: 'token', type: StorageType.LOCAL });
         navigate('/login');
     }
 

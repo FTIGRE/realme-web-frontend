@@ -2,7 +2,7 @@ import { AuthRepositoryImplementation } from "../../data/repositories/auth.respo
 import { LoginRequestDataType } from "../models/types/loginApiData.type";
 import { ResponseType } from "../models/types/response.type";
 
-export class AuthUserCase {
+export class AuthUseCase {
     protected authRepositoryImplementation: AuthRepositoryImplementation;
 
     constructor(authRepositoryImplementation: AuthRepositoryImplementation) {
