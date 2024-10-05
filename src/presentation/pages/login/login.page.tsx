@@ -3,31 +3,31 @@ import { Container, Button, Typography, Box } from '@mui/material';
 import BasicTextField from '../../components/basictextfield.component';
 import { AuthService } from '../../../infrastructure/services/auth.service';
 import { AuthRepositoryImplementation } from '../../../data/repositories/auth.respository';
-import { AuthUserCase } from '../../../domain/userCases/auth.usercase';
+import { AuthUseCase } from '../../../domain/useCases/auth.usecase';
 import { useNavigate } from 'react-router-dom';
-import { useStorage } from '../../contexts/storage.context';
+import { useStorage } from '../../../domain/contexts/storage.context';
 import { StorageType } from '../../../shared/enums/storagetype.enum';
 
 const LoginPage: React.FC = () => {
     
     const authService = new AuthService();
     const authRepositoryImplementation = new AuthRepositoryImplementation(authService);
-    const authUserCase = new AuthUserCase(authRepositoryImplementation);
+    const authUseCase = new AuthUseCase(authRepositoryImplementation);
 
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     
     const navigate = useNavigate();
 
-    const {storageUserCase} = useStorage();
+    const {storageUseCase} = useStorage();
 
     useEffect(() => {
         const verifyToken = async () => {
-            const token = storageUserCase.getItem({ key: 'token', type: StorageType.LOCAL });
+            const token = storageUseCase.getItem({ key: 'token', type: StorageType.LOCAL });
             if (token) {
-                const response = await authUserCase.verifyToken(token);
+                const response = await authUseCase.verifyToken(token);
                 if (response.error) {
-                    storageUserCase.removeItem({ key: 'token', type: StorageType.LOCAL });
+                    storageUseCase.removeItem({ key: 'token', type: StorageType.LOCAL });
                 } else {
                     navigate('/homePage');
                 }
@@ -38,11 +38,11 @@ const LoginPage: React.FC = () => {
 
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
-        const response = await authUserCase.login({ user: userName, password: password });
+        const response = await authUseCase.login({ user: userName, password: password });
         if (response.error) {
             alert('Error al iniciar sesión');
         } else {
-            response.body && storageUserCase.setItem({ key: 'token', value: response.body, type: StorageType.LOCAL });
+            response.body && storageUseCase.setItem({ key: 'token', value: response.body, type: StorageType.LOCAL });
             navigate('/homePage');
         }
     };

@@ -2,7 +2,7 @@ import { StorageRepositoryImplementation } from "../../data/repositories/storage
 import { StorageType } from "../../shared/enums/storagetype.enum";
 import { GetDeleteItemRequestDataType, SetItemRequestDataType } from "../models/types/storageApiDataType";
 
-export class StorageUserCase {
+export class StorageUseCase {
     protected storageRepositoryImplementation: StorageRepositoryImplementation;
 
     constructor(storageRepositoryImplementation: StorageRepositoryImplementation) {
