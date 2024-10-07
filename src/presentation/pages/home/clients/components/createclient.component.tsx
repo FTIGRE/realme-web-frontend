@@ -3,12 +3,11 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } 
 import { ClientEntity } from '../../../../../data/entities/client.entity';
 
 interface CreateClientDialogProps {
-    open: boolean;
     onClose: () => void;
     onSave: (client: ClientEntity) => void;
 }
 
-const CreateClientDialog: React.FC<CreateClientDialogProps> = ({ open, onClose, onSave }) => {
+const CreateClientDialog: React.FC<CreateClientDialogProps> = ({ onClose, onSave }) => {
     const [name, setName] = useState<string | null>(null);
     const [idNumber, setIdNumber] = useState<number | null>(null);
     const [birthDate, setBirthDate] = useState<string | null>(null);
@@ -28,12 +27,11 @@ const CreateClientDialog: React.FC<CreateClientDialogProps> = ({ open, onClose, 
     };
 
     const handleClose = () => {
-        setName(null); setIdNumber(null); setBirthDate(null);
         onClose();
     }
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={true} onClose={onClose}>
             <DialogTitle>Create Client</DialogTitle>
             <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
                 <DialogContent>

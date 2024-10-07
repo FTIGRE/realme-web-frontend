@@ -1,6 +1,6 @@
 import { ClientEntity } from "../../data/entities/client.entity";
 import { ClientsRepositoryImplementation } from "../../data/repositories/clients.repository";
-import { SearchClientRequestDataType } from "../models/types/clientApiData.type";
+import { SearchRequestDataType } from "../models/types/searchApiData.type";
 import { ResponseType } from "../models/types/response.type";
 
 export class ClientsUseCase {
@@ -9,7 +9,7 @@ export class ClientsUseCase {
         this.clientsRepositoryImplementation = clientsRepositoryImplementation
     }
 
-    async SearchClients(request: SearchClientRequestDataType): Promise<ResponseType<ClientEntity[]>> {
+    async SearchClients(request: SearchRequestDataType): Promise<ResponseType<ClientEntity[]>> {
         try {
             return await this.clientsRepositoryImplementation.SearchClients(request)
         } catch (error) {

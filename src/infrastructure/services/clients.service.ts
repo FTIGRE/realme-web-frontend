@@ -1,5 +1,5 @@
 import { ClientEntity } from "../../data/entities/client.entity";
-import { SearchClientRequestDataType } from "../../domain/models/types/clientApiData.type";
+import { SearchRequestDataType } from "../../domain/models/types/searchApiData.type";
 import { ResponseType } from "../../domain/models/types/response.type";
 import { BaseApi } from "../api/base.api";
 import { API_BASE_URL, API_CLIENTS_URI } from "../config/env.config";
@@ -9,7 +9,7 @@ export class ClientsService {
     constructor() {
         this.baseApi = new BaseApi(API_BASE_URL);
     }
-    async SearchClients(request: SearchClientRequestDataType): Promise<ResponseType<ClientEntity[]>> {
+    async SearchClients(request: SearchRequestDataType): Promise<ResponseType<ClientEntity[]>> {
         const { column, value } = request;
         const response = await this.baseApi.doGet<ClientEntity[]>(`${API_CLIENTS_URI}${column}/${value}`);
         return response;

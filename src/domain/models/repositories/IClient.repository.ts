@@ -1,9 +1,9 @@
 import { ClientEntity } from "../../../data/entities/client.entity";
-import { SearchClientRequestDataType } from "../types/clientApiData.type";
+import { SearchRequestDataType } from "../types/searchApiData.type";
 import { ResponseType } from "../types/response.type";
 
 export interface IClientRepository {
-    SearchClients(request: SearchClientRequestDataType): Promise<ResponseType<ClientEntity[]>>;
+    SearchClients(request: SearchRequestDataType): Promise<ResponseType<ClientEntity[]>>;
     GetClients(): Promise<ResponseType<ClientEntity[]>>;
     CreateClient(client: ClientEntity): Promise<ResponseType<string>>;
 }
