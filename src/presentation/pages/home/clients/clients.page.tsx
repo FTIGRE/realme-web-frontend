@@ -18,11 +18,11 @@ const ClientsPage: React.FC = () => {
     const membershipsRepositoryImplementation = new MembershipsRepositoryImplementation(membershipsService);
     const membershipsUseCase = new MembershipsUseCase(membershipsRepositoryImplementation);
 
-    const {clientsUseCase} = useClients();
+    const { clientsUseCase } = useClients();
     const [clients, setClients] = useState<ClientEntity[]>([]);
     const [openCreateDialog, setOpenCreateDialog] = useState(false);
     const [openMembershipDialog, setOpenMembershipDialog] = useState(false);
-    const [selectedClient, setSelectedClient] = useState<ClientEntity | null>(null);
+    const [selectedClient, setSelectedClient] = useState<ClientEntity | undefined>(undefined);
     const [filter, setFilter] = useState<string>('0');
 
     const filterOptions = [
@@ -33,11 +33,19 @@ const ClientsPage: React.FC = () => {
 
     useEffect(() => {
         const fetchClientsData = async () => {
-            const data = await clientsUseCase.GetClients();
+            let data;
+            if (filter === '0') {
+                data = await clientsUseCase.GetClients();
+
+            } else if (filter === '1') {
+                data = await clientsUseCase.GetClientsMemberships('active');
+            } else {
+                data = await clientsUseCase.GetClientsMemberships('expired');
+            }
             !data.error && data.body && setClients(data.body);
         };
         fetchClientsData();
-    }, []);// eslint-disable-line react-hooks/exhaustive-deps
+    }, [filter]);// eslint-disable-line react-hooks/exhaustive-deps
 
     const handleChangeCreateDialogStatus = () => setOpenCreateDialog(!openCreateDialog);
 
@@ -52,7 +60,7 @@ const ClientsPage: React.FC = () => {
     };
 
     const handleCloseMembershipDialog = () => {
-        setSelectedClient(null);
+        setSelectedClient(undefined);
         setOpenMembershipDialog(false);
     };
 
@@ -60,16 +68,6 @@ const ClientsPage: React.FC = () => {
         const result = await membershipsUseCase.createMembership(membership);
         result.error && alert('Error al resgistrar la membresía');
     };
-
-    const validateMembershipStatus = async (clientId: number): Promise<boolean> => {
-        const request = {
-            column: 'client_id',
-            value: `${clientId}`
-        };
-        const data = await membershipsUseCase.getMembership(request);
-        const validator = !data.error && data.body && data.body.state === 'active';
-        return validator ?? false;
-    }
 
     return (
         <Container>
@@ -79,17 +77,17 @@ const ClientsPage: React.FC = () => {
                         Clientes
                     </Typography>
                 </Grid2>
-                
+
 
                 <Grid2>
                     <IconButton color="primary" onClick={handleChangeCreateDialogStatus}>
                         <Add />
                     </IconButton>
-                    <BasicSelect 
-                        items={filterOptions} 
-                        value={filter} 
-                        onItemChange={setFilter} 
-                        label={'Filtro'} 
+                    <BasicSelect
+                        items={filterOptions}
+                        value={filter}
+                        onItemChange={setFilter}
+                        label={'Filtro'}
                     />
                 </Grid2>
             </Grid2>
@@ -103,17 +101,19 @@ const ClientsPage: React.FC = () => {
                                 <IconButton color="primary">
                                     <EditIcon />
                                 </IconButton>
-                                    <IconButton color="success" onClick={() => handleOpenMembershipDialog(client)}>
-                                        <CheckCircle />
-                                    </IconButton>
+                                <IconButton
+                                    color={client.state === "active" ? "success" : client.state === "expired" ? "error" : "default"}
+                                    onClick={() => handleOpenMembershipDialog(client)}>
+                                    <CheckCircle />
+                                </IconButton>
                             </Box>
                         </Paper>
                     </Grid2>
                 ))}
             </Grid2>
             {openCreateDialog && <CreateClientDialog onClose={handleChangeCreateDialogStatus} onSave={handleSaveClient} />
-}
-            {selectedClient && openMembershipDialog &&  (
+            }
+            {selectedClient && openMembershipDialog && (
                 <MembershipDialog
                     client={selectedClient}
                     onCloseDialog={handleCloseMembershipDialog}

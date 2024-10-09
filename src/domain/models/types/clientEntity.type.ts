@@ -3,4 +3,5 @@ export type ClientEntityType = {
     name: string;
     ic: number;
     BDate: string;
+    state?: string;
 }

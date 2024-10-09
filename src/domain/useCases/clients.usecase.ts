@@ -41,4 +41,15 @@ export class ClientsUseCase {
             }
         }
     }
+
+    async GetClientsMemberships(state: string): Promise<ResponseType<ClientEntity[]>> {
+        try {
+            return await this.clientsRepositoryImplementation.GetClientsMemberships(state)
+        } catch (error) {
+            return {
+                error: true,
+                status: 500
+            }
+        }
+    }
 }

@@ -16,11 +16,16 @@ export class ClientsService {
     }
 
     async GetClients(): Promise<ResponseType<ClientEntity[]>> {
-        const response = await this.baseApi.doGet<ClientEntity[]>("clientes");
+        const response = await this.baseApi.doGet<ClientEntity[]>(API_CLIENTS_URI);
         return response;
     }
     async CreateClient(client: ClientEntity): Promise<ResponseType<string>> {
         const response = await this.baseApi.doPost<string>(API_CLIENTS_URI, client);
+        return response;
+    }
+
+    async GetClientsMemberships(state: string): Promise<ResponseType<ClientEntity[]>> {
+        const response = await this.baseApi.doGet<ClientEntity[]>(`${API_CLIENTS_URI}memberships/${state}`);
         return response;
     }
 }

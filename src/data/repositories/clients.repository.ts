@@ -21,4 +21,8 @@ export class ClientsRepositoryImplementation implements IClientRepository {
         const response = await this.clientsService.CreateClient(client);
         return response;
     }
+    async GetClientsMemberships(state: string): Promise<ResponseType<ClientEntity[]>> {
+        const response = await this.clientsService.GetClientsMemberships(state);
+        return response;
+    }
 }

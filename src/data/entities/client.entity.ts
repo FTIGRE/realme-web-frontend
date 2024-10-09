@@ -5,12 +5,14 @@ export class ClientEntity {
     public name: string;
     public ic: number;
     public BDate: string;
+    public state?: string;
 
     constructor(client: ClientEntityType) {
-        const { id, name, ic, BDate } = client;
+        const { id, name, ic, BDate, state } = client;
         this.id = id;
         this.name = name;
         this.ic = ic;
         this.BDate = BDate;
+        this.state = state;
     }
 }
