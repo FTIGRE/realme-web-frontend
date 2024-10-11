@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TextField, Autocomplete, Box, Button, Grid2 } from '@mui/material';
+import { TextField, Autocomplete, Box, Button, Grid2, CircularProgress } from '@mui/material';
 import { useProducts } from '../../../../domain/contexts/products.context';
 import { ProductEntity } from '../../../../data/entities/product.entity';
 import { PaymentMethod } from '../../../../shared/enums/paymentmethod.enum';
@@ -7,6 +7,8 @@ import { useClients } from '../../../../domain/contexts/clients.context';
 import { ClientEntity } from '../../../../data/entities/client.entity';
 import BasicSelect from '../../../components/basicselect.component';
 import CreateProductDialog from './components/createproduct.component';
+import { useSells } from '../../../../domain/contexts/sells.context';
+import { PostSellRequestDataType } from '../../../../domain/models/types/sellApiData.type';
 
 const SellsPage: React.FC = () => {
 
@@ -14,7 +16,7 @@ const SellsPage: React.FC = () => {
     const { clientsUseCase } = useClients();
 
     const [products, setProducts] = useState<ProductEntity[]>([]);
-    const [selectedProduct, setSelectedProduct] = useState<string>('');
+    const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
 
     const [clients, setClients] = useState<ClientEntity[]>([]);
     const [selectedClient, setSelectedClient] = useState<ClientEntity | null>(null);
@@ -23,19 +25,42 @@ const SellsPage: React.FC = () => {
 
     const [selectedMethod, setSelectedMethod] = useState<string>('');
 
-    const [debt, setDebt] = useState<string>('');
+    const [debt, setDebt] = useState<string>('0');
 
     const [open, setOpen] = useState(false);
 
-    const handleSave = () => {
-        console.log({
-            selectedProduct,
-            selectedClient,
-            quantity,
-            selectedMethod,
-            debt
-        });
+    const {sellsUseCase} = useSells();
+
+    const [loading, setLoading] = useState(false);
+
+    const handleSave = async () => {
+        if (!selectedClient || !selectedProduct || !quantity || !selectedMethod || !debt) {
+            alert('Todos los campos son obligatorios');
+            return;
+        }
+        setLoading(true);
+        const sell: PostSellRequestDataType = {
+            id: 0,
+            p_date: new Date().toISOString().split('T')[0],
+            client_id: selectedClient.id,
+            product_id: parseInt(selectedProduct),
+            quantity: parseInt(quantity),
+            method: selectedMethod,
+            debt: parseFloat(debt)
+        };
+        const response = await sellsUseCase.PostSell(sell);
+        setLoading(false);
+        response.error ? alert('Error al guardar la venta') : restoreState();
+
     };
+
+    const restoreState = () => {
+        setSelectedClient(null);
+        setSelectedProduct(null);
+        setQuantity('');
+        setSelectedMethod('');
+        setDebt('0');
+    }
 
     const handleSelectClient = (event: React.SyntheticEvent<Element, Event>, value: ClientEntity | null) => {
         setSelectedClient(value);
@@ -67,27 +92,28 @@ const SellsPage: React.FC = () => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <Autocomplete
-                value={selectedClient}
-                onChange={handleSelectClient}
-                getOptionLabel={(option) => option.name}
-                options={clients}
-                renderOption={(props, option) => (
-                    <li {...props} key={option.id}>
-                        {option.name}
-                    </li>
-                )}
-                renderInput={(params) => <TextField
-                    {...params}
-                    onKeyDown={handleSearchClient}
-                    label="Cliente"
-                />}
-            />
+                    <Autocomplete
+                        value={selectedClient}
+                        onChange={handleSelectClient}
+                        getOptionLabel={(option) => option.name}
+                        options={clients}
+                        renderOption={(props, option) => (
+                            <li {...props} key={option.id}>
+                                {option.name}
+                            </li>
+                        )}
+                        renderInput={(params) => <TextField
+                            {...params}
+                            onKeyDown={handleSearchClient}
+                            label="Cliente"
+                            type='search'
+                        />}
+                    />
             <Grid2 container alignItems="center">
                 <Grid2 size={8}>
                     <BasicSelect
                         items={products.map(product => ({ key: product.id, value: product.id, name: product.name }))}
-                        value={selectedProduct}
+                        value={selectedProduct ?? ''}
                         onItemChange={setSelectedProduct}
                         label="Producto"
                     />
@@ -107,9 +133,9 @@ const SellsPage: React.FC = () => {
             />
             <BasicSelect
                 items={[
-                    { key: PaymentMethod.CASH, value: PaymentMethod.CASH, name: PaymentMethod.CASH },
-                    { key: PaymentMethod.CREDIT, value: PaymentMethod.CREDIT, name: PaymentMethod.CREDIT },
-                    { key: PaymentMethod.TRANSFER, value: PaymentMethod.TRANSFER, name: PaymentMethod.TRANSFER }
+                    { key: PaymentMethod.CASH, value: PaymentMethod.CASH, name: 'Efectivo' },
+                    { key: PaymentMethod.CREDIT, value: PaymentMethod.CREDIT, name: 'Fiado' },
+                    { key: PaymentMethod.TRANSFER, value: PaymentMethod.TRANSFER, name: 'App-Transferencia' }
                 ]}
                 value={selectedMethod}
                 onItemChange={setSelectedMethod}
@@ -122,9 +148,9 @@ const SellsPage: React.FC = () => {
                 onChange={(e) => setDebt(e.target.value)}
             />
 
-            <Button variant="contained" color="primary" onClick={handleSave}>
+           {loading ? <CircularProgress/> : <Button variant="contained" color="primary" onClick={handleSave}>
                 Guardar
-            </Button>
+            </Button>}
             <CreateProductDialog open={open} onClose={handleChangeDialogStatus} onSave={handleSaveProduct} />
         </Box>
     );
