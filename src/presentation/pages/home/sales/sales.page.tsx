@@ -7,10 +7,10 @@ import { useClients } from '../../../../domain/contexts/clients.context';
 import { ClientEntity } from '../../../../data/entities/client.entity';
 import BasicSelect from '../../../components/basicselect.component';
 import CreateProductDialog from './components/createproduct.component';
-import { useSells } from '../../../../domain/contexts/sells.context';
-import { PostSellRequestDataType } from '../../../../domain/models/types/sellApiData.type';
+import { useSales } from '../../../../domain/contexts/sales.context';
+import { PostSaleRequestDataType } from '../../../../domain/models/types/saleApiData.type';
 
-const SellsPage: React.FC = () => {
+const SalesPage: React.FC = () => {
 
     const { productsUseCase } = useProducts();
     const { clientsUseCase } = useClients();
@@ -29,7 +29,7 @@ const SellsPage: React.FC = () => {
 
     const [open, setOpen] = useState(false);
 
-    const {sellsUseCase} = useSells();
+    const {salesUseCase} = useSales();
 
     const [loading, setLoading] = useState(false);
 
@@ -39,7 +39,7 @@ const SellsPage: React.FC = () => {
             return;
         }
         setLoading(true);
-        const sell: PostSellRequestDataType = {
+        const sale: PostSaleRequestDataType = {
             id: 0,
             p_date: new Date().toISOString().split('T')[0],
             client_id: selectedClient.id,
@@ -48,7 +48,7 @@ const SellsPage: React.FC = () => {
             method: selectedMethod,
             debt: parseFloat(debt)
         };
-        const response = await sellsUseCase.PostSell(sell);
+        const response = await salesUseCase.PostSale(sale);
         setLoading(false);
         response.error ? alert('Error al guardar la venta') : restoreState();
 
@@ -156,4 +156,4 @@ const SellsPage: React.FC = () => {
     );
 };
 
-export default SellsPage;
+export default SalesPage;

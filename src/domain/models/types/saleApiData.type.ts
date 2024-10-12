@@ -1,4 +1,4 @@
-export type PostSellRequestDataType = {
+export type PostSaleRequestDataType = {
     id: number;
     client_id: number;
     product_id: number;

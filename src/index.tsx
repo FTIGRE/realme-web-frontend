@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { StorageProvider } from './domain/contexts/storage.context';
 import { ProductsProvider } from './domain/contexts/products.context';
 import { ClientsProvider } from './domain/contexts/clients.context';
-import { SellsProvider } from './domain/contexts/sells.context';
+import { SalesProvider } from './domain/contexts/sales.context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,9 +16,9 @@ root.render(
     <ClientsProvider>
       <ProductsProvider>
         <StorageProvider>
-          <SellsProvider>
+          <SalesProvider>
             <App />
-          </SellsProvider>
+          </SalesProvider>
         </StorageProvider>
       </ProductsProvider>
     </ClientsProvider>

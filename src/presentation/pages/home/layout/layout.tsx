@@ -3,7 +3,7 @@ import { Box, Button, Drawer, List, ListItem } from '@mui/material';
 import { Pages } from '../../../../shared/enums/pages.enum';
 import RoutinesPage from '../routines/routines.page';
 import ClientsPage from '../clients/clients.page';
-import SellsPage from '../sells/sells.page';
+import SalesPage from '../sales/sales.page';
 import SummaryPage from '../summary/summary.page';
 import './layout.scss';
 import { useStorage } from '../../../../domain/contexts/storage.context';
@@ -57,7 +57,7 @@ const Layout: React.FC = () => {
                         case Pages.CLIENTS:
                             return <ClientsPage />;
                         case Pages.SELL:
-                            return <SellsPage />;
+                            return <SalesPage />;
                         case Pages.SUMMARY:
                             return <SummaryPage />;
                         default:

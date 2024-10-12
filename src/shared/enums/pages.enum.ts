@@ -1,6 +1,6 @@
 export enum Pages {
     ROUTINES = 'Routines',
     CLIENTS = 'Clients',
-    SELL = 'Sell',
+    SELL = 'Sale',
     SUMMARY = 'Summary',
 }
