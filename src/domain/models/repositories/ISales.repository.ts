@@ -4,5 +4,5 @@ import { PostSaleRequestDataType } from "../types/saleApiData.type";
 
 export interface ISalesRepository {
     PostSale(sale: PostSaleRequestDataType): Promise<ResponseType<string>>;
-    GetSales(): Promise<ResponseType<SaleEntity[]>>;
+    GetSales(date: string): Promise<ResponseType<SaleEntity[]>>;
 }

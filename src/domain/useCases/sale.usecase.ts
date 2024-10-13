@@ -12,7 +12,7 @@ export class SalesUseCase {
 
     async PostSale(sale: PostSaleRequestDataType): Promise<ResponseType<string>> {
         try {
-            return this.salesRepositoryImplementation.PostSale(sale);
+            return await this.salesRepositoryImplementation.PostSale(sale);
         } catch (error) {
             return {
                 error: true,
@@ -21,9 +21,9 @@ export class SalesUseCase {
         }
     }
 
-    async GetSales(): Promise<ResponseType<SaleEntity[]>> {
+    async GetSales(date: string): Promise<ResponseType<SaleEntity[]>> {
         try {
-            return this.salesRepositoryImplementation.GetSales();
+            return await this.salesRepositoryImplementation.GetSales(date);
         } catch (error) {
             return {
                 error: true,

@@ -12,12 +12,12 @@ export class SalesService {
     }
     
     async PostSale(sale: PostSaleRequestDataType): Promise<ResponseType<string>> {
-        const response = this.baseApi.doPost<string>(API_SALES_URI,sale);
+        const response = await this.baseApi.doPost<string>(API_SALES_URI,sale);
         return response;
     }
 
-    async GetSales(): Promise<ResponseType<SaleEntity[]>> {
-        const response = this.baseApi.doGet<SaleEntity[]>(API_SALES_URI+API_SALES_GET_DETAILS_URI);
+    async GetSales(date: string): Promise<ResponseType<SaleEntity[]>> {
+        const response = await this.baseApi.doGet<SaleEntity[]>(API_SALES_URI+API_SALES_GET_DETAILS_URI+date);
         return response;
     }
 }

@@ -10,11 +10,11 @@ export class SalesRepositoryImplementation implements ISalesRepository {
     constructor(salesService: SalesService) {
         this.salesService = salesService;
     }
-    PostSale(sale: PostSaleRequestDataType): Promise<ResponseType<string>> {
-        return this.salesService.PostSale(sale);
+    async PostSale(sale: PostSaleRequestDataType): Promise<ResponseType<string>> {
+        return await this.salesService.PostSale(sale);
     }
-    GetSales(): Promise<ResponseType<SaleEntity[]>> {
-        return this.salesService.GetSales();
+    async GetSales(date: string): Promise<ResponseType<SaleEntity[]>> {
+        return await this.salesService.GetSales(date);
     }
     
 }

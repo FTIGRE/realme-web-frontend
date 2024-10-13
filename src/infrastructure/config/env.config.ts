@@ -4,7 +4,7 @@ export const API_PRODUCTS_URI = process.env.REACT_APP_API_PRODUCTS_URI ?? "";
 export const API_MEMBERSHIPS_URI = process.env.REACT_APP_API_MEMBERSHIPS_URI ?? "";
 
 export const API_SALES_URI = process.env.REACT_APP_API_SALES_URI ?? "";
-export const API_SALES_GET_DETAILS_URI = 'details';
+export const API_SALES_GET_DETAILS_URI = 'details/';
 
 export const API_AUTH_URI = process.env.REACT_APP_API_AUTH_URI ?? "";
 export const API_AUTH_LOGIN_URI = 'login';
