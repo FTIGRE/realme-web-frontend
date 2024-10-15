@@ -3,10 +3,25 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import EditIcon from '@mui/icons-material/Edit';
 import { useSales } from '../../../../domain/contexts/sales.context';
 import { SaleEntity } from '../../../../data/entities/sale.entity';
+import EditSaleDialog from './components/editsale.component';
+import { SaleType } from '../../../../domain/models/types/saleEntity.type';
 
 const SummaryPage: React.FC = () => {
     const [sales, setSales] = useState<SaleEntity[]>([]);
     const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
+    const [selectedSale, setSelectedSale] = useState<SaleEntity | null>(null);
+
+    const [openEditDialog, setOpenEditDialog] = useState<boolean>(false);
+
+    const handleOpenEditDialog = (sale: SaleEntity) => {
+        setSelectedSale(sale);
+        setOpenEditDialog(true);
+    }
+
+    const handleCloseDialog = () => {
+        setOpenEditDialog(false);
+        setSelectedSale(null);
+    }
 
     const {salesUseCase} = useSales();
 
@@ -21,7 +36,6 @@ const SummaryPage: React.FC = () => {
 
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedDate(event.target.value);
-        // Aquí puedes agregar lógica para filtrar las ventas por fecha
     };
 
     return (
@@ -32,8 +46,10 @@ const SummaryPage: React.FC = () => {
                     type="date"
                     value={selectedDate}
                     onChange={handleDateChange}
-                    InputLabelProps={{
-                        shrink: true,
+                    slotProps={{
+                        inputLabel: {
+                            shrink: true,
+                        },
                     }}
                 />
             </Box>
@@ -60,7 +76,15 @@ const SummaryPage: React.FC = () => {
                                 <TableCell>{sale.total}</TableCell>
                                 <TableCell>{sale.debt}</TableCell>
                                 <TableCell>
-                                    <IconButton>
+                                    <IconButton onClick={()=>handleOpenEditDialog({
+                                        id: sale.id,
+                                        client_name: sale.client_name,
+                                        product_name: sale.product_name,
+                                        quantity: sale.quantity,
+                                        method: sale.method,
+                                        total: sale.total,
+                                        debt: sale.debt
+                                    })} >
                                         <EditIcon />
                                     </IconButton>
                                 </TableCell>
@@ -69,6 +93,7 @@ const SummaryPage: React.FC = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            {openEditDialog && selectedSale && <EditSaleDialog onClose={handleCloseDialog} saleId={selectedSale.id} />}
         </Box>
     );
 };
