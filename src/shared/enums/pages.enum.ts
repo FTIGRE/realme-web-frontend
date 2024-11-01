@@ -3,4 +3,5 @@ export enum Pages {
     CLIENTS = 'Clients',
     SELL = 'Sale',
     SUMMARY = 'Summary',
+    DEBTORS = 'Debtors',
 }

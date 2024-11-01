@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Drawer, List, ListItem } from '@mui/material';
+import { Box, Button, Collapse, Drawer, List, ListItem, ListItemButton } from '@mui/material';
 import { Pages } from '../../../../shared/enums/pages.enum';
 import RoutinesPage from '../routines/routines.page';
 import ClientsPage from '../clients/clients.page';
@@ -9,6 +9,7 @@ import './layout.scss';
 import { useStorage } from '../../../../domain/contexts/storage.context';
 import { StorageType } from '../../../../shared/enums/storagetype.enum';
 import { useNavigate } from 'react-router-dom';
+import DebtorsPage from '../clients/debtors.page';
 
 const Layout: React.FC = () => {
 
@@ -24,6 +25,7 @@ const Layout: React.FC = () => {
         storageUseCase.removeItem({ key: 'token', type: StorageType.LOCAL });
         navigate('/login');
     }
+    const [open, setOpen] = useState(false);
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -36,8 +38,18 @@ const Layout: React.FC = () => {
                         <Button onClick={() => handleChangePage(Pages.ROUTINES)}>Rutinas</Button>
                     </ListItem>
                     <ListItem>
-                        <Button onClick={() => handleChangePage(Pages.CLIENTS)}>Clientes</Button>
+                        <Button onClick={() => setOpen(!open)}>Clientes</Button>
                     </ListItem>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItemButton>
+                                <Button fullWidth onClick={()=>handleChangePage(Pages.CLIENTS)}>General</Button>
+                            </ListItemButton>
+                            <ListItemButton>
+                                <Button fullWidth onClick={ ()=>handleChangePage(Pages.DEBTORS) }>Deudores</Button>
+                            </ListItemButton>
+                        </List>
+                    </Collapse>
                     <ListItem>
                         <Button onClick={() => handleChangePage(Pages.SELL)}>Vender</Button>
                     </ListItem>
@@ -56,6 +68,8 @@ const Layout: React.FC = () => {
                             return <RoutinesPage />;
                         case Pages.CLIENTS:
                             return <ClientsPage />;
+                        case Pages.DEBTORS:
+                            return <DebtorsPage />;
                         case Pages.SELL:
                             return <SalesPage />;
                         case Pages.SUMMARY:
